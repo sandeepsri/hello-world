@@ -4,6 +4,9 @@ pipeline {
     stage ('Checkout') {
       steps {
         git 'https://github.com/sandeepsri/hello-world.git'
+         withMaven {
+            sh "mvn clean verify"
+         } 
       }
     }
     stage ('check-git-secrets') {
