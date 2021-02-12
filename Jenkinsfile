@@ -49,7 +49,7 @@ pipeline {
     }  
     stage ('Deploy-to-tomcat') {
       steps {
-        sh 'scp target/*.war sandeep@localhost:/home/sandeep/tomcat9/webapps/'
+        sh 'scp -o StrictHostKeyChecking=no target/*.war sandeep@localhost:/home/sandeep/tomcat9/webapps/'
       }
     }
     stage ('DAST') {
