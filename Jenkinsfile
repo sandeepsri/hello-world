@@ -41,8 +41,8 @@ pipeline {
     }
     stage ('Source-Composition-Analysis') {
       steps {
-        sh 'rm owasp* || true'
-        sh 'wget https://github.com/sandeepsri/hello-world/master/owasp-dependency-check.sh'
+       // sh 'rm owasp* || true'
+       // sh 'wget https://github.com/sandeepsri/hello-world/master/owasp-dependency-check.sh'
         sh 'chmod +x owasp-dependency-check.sh'
         sh 'bash owasp-dependency-check.sh'
       }
