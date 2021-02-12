@@ -49,7 +49,7 @@ pipeline {
     }  
     stage ('Deploy-to-tomcat') {
       steps {
-        sh 'cp target/*.war ~/tomcat9/webapps/'
+        sh 'cp target/*.war /home/sandeep/tomcat9/webapps/'
       }
     }
     stage ('DAST') {
