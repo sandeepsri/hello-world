@@ -13,8 +13,10 @@ pipeline {
       }
     }
     stage ('SAST') {
+      environment {
+          scannerHome = tool 'sonnar'
+      }
       steps {
-        def scannerHome = tool 'sonnar'
         withSonarQubeEnv('sonarqube') {
          // sh 'mvn clean package sonar:sonar'
           sh "${scannerHome}/bin/sonar-scanner"
