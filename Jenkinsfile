@@ -20,7 +20,7 @@ pipeline {
         withSonarQubeEnv('sonarqube') {
          // sh 'mvn clean package sonar:sonar'
           sh "${scannerHome}/bin/sonar-scanner"
-          sh 'cat target/sonar/report-task.txt'
+         // sh 'cat target/sonar/report-task.txt'
         }
       }
     }
