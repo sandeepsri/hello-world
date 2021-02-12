@@ -9,7 +9,7 @@ pipeline {
     stage ('check-git-secrets') {
       steps {
         sh 'rm trufflehog || true'
-        sh 'docker run -t gesellix/trufflehog --json https://github.com/sandeepsri/hello-world.git > trufflehog'
+        sh 'docker run gesellix/trufflehog --json https://github.com/sandeepsri/hello-world.git > trufflehog'
       }
     }
     stage ('SAST') {
@@ -22,7 +22,7 @@ pipeline {
     }
     stage ('Source-Composition-Analysis') {
       steps {
-        sh 'rm owasp*'
+        sh 'rm owasp* || true'
         sh 'wget https://github.com/sandeepsri/hello-world/master/owasp-dependency-check.sh'
         sh 'chmod +x owasp-dependency-check.sh'
         sh 'bash owasp-dependency-check.sh'
@@ -35,14 +35,12 @@ pipeline {
     }
     stage ('Deploy-to-tomcat') {
       steps {
-        sh 'cp target/*.war /opt/tomcat/webapps/'
+        sh 'cp target/*.war ~/tomcat9/webapps/'
       }
     }
     stage ('DAST') {
       steps {
-        sshagent(['ZAP-SSH']) {
-          sh 'run -t owasp/zap2docker-stable zap-baseline.py -t http://localhost:8080/hello-world'
-        }
+        sh 'docker run owasp/zap2docker-stable zap-baseline.py -t http://localhost:8083/hello-world'
       }
     }
   }
