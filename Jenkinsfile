@@ -12,15 +12,18 @@ pipeline {
         sh 'docker run gesellix/trufflehog --json https://github.com/sandeepsri/hello-world.git > trufflehog'
       }
     }
-    stage ('SAST') {
-      environment {
-          scannerHome = tool 'sonnar'
+    stage ('Build') {
+     steps {
+        sh 'mvn clean package'
       }
+    }
+    stage ('SAST') {     
       steps {
         withSonarQubeEnv('sonarqube') {
          // sh 'mvn clean package sonar:sonar'
-          sh "${scannerHome}/bin/sonar-scanner"
+         // sh "${scannerHome}/bin/sonar-scanner"
          // sh 'cat target/sonar/report-task.txt'
+          sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:4.5.0.2216:sonar'
         }
       }
     }
@@ -31,12 +34,7 @@ pipeline {
         sh 'chmod +x owasp-dependency-check.sh'
         sh 'bash owasp-dependency-check.sh'
       }
-    }
-   stage ('Build') {
-     steps {
-        sh 'mvn clean package'
-      }
-    }
+    }  
     stage ('Deploy-to-tomcat') {
       steps {
         sh 'cp target/*.war ~/tomcat9/webapps/'
