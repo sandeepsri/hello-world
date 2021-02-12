@@ -10,11 +10,15 @@ pipeline {
       steps {
         sh 'rm trufflehog || true'
         sh 'docker run gesellix/trufflehog --json https://github.com/sandeepsri/hello-world.git > trufflehog'
+        sh 'which mvn'
       }
     }
     stage ('SAST') {
       steps {
         withSonarQubeEnv('sonar') {
+          sh 'mvn -version'
+          sh 'java -version'
+          sh 'which mvn'
           sh 'mvn sonar:sonar'
           sh 'cat target/sonar/report-task.txt'
         }
