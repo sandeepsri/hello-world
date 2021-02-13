@@ -47,14 +47,14 @@ pipeline {
         sh 'bash owasp-dependency-check.sh'
       }
     }  
-    stage ('Deploy-to-tomcat') {
-      steps {
-        sh 'scp -o StrictHostKeyChecking=no target/*.war sandeep@192.168.0.7:/home/sandeep/tomcat9/webapps/'
-      }
-    }
+   // stage ('Deploy-to-tomcat') {
+   //   steps {
+   //     sh 'scp -o StrictHostKeyChecking=no target/*.war sandeep@192.168.0.7:/home/sandeep/tomcat9/webapps/'
+   //   }
+   // }
     stage ('DAST') {
       steps {
-        sh 'docker run owasp/zap2docker-stable zap-baseline.py -t http://193.168.0.7:8083/webapp'
+        sh 'docker run owasp/zap2docker-stable zap-baseline.py -t http://192.168.0.7:8083/webapp'
       }
     }
   }
